@@ -1,0 +1,23 @@
+{
+  "name": "fabric-shimmered-table-package",
+  "version": "1.0.0",
+  "description": "custom table package for resizing tables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Newmsy/fabric-react-custom-details-list.git"
+  },
+  "keywords": [
+    "details",
+    "list"
+  ],
+  "author": "AlexNewman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Newmsy/fabric-react-custom-details-list/issues"
+  },
+  "homepage": "https://github.com/Newmsy/fabric-react-custom-details-list#readme"
+}
