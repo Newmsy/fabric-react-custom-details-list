@@ -1,42 +1,26 @@
-> The **Office UI Fabric React** project has evolved into **Fluent UI React**! We have a lot in store for Fluent UI - [Read our announcement here](https://developer.microsoft.com/en-us/office/blogs/ui-fabric-is-evolving-into-fluent-ui/) and see more details about what this means for package consumers below.
+> This is a release of **[Office UI fabric React v7.117.0](https://www.npmjs.com/package/office-ui-fabric-react)** with a modification to the DetailsList component to allow for controlled input for column widths.
 
-# [Fluent UI React](https://developer.microsoft.com/en-us/fluentui)
-
-**The React-based front-end framework for building experiences for Microsoft 365.**
-
-Fluent UI React ([formerly Office UI Fabric React](https://developer.microsoft.com/en-us/office/blogs/ui-fabric-is-evolving-into-fluent-ui/)) is a collection of robust React-based components designed to make it simple for you to create consistent web experiences using the Fluent Design Language.
-
-For information about available controls, see the [Fluent UI website](https://developer.microsoft.com/en-us/fluentui).
-
-To get started using or contributing to Fluent UI React, see the [full readme](https://github.com/microsoft/fluentui/blob/master/README.md).
-
-## Moving to `@fluentui/react`
-
-Going forward, the `office-ui-fabric-package` will be renamed to `@fluentui/react`. The `@fluentui/react` package exists today as a mirror of `office-ui-fabric-react`'s public API surface. (Updates will still be published under both names for at least the duration of version 7.)
-
-If you'd like to start using `@fluentui/react` now, you can do so by changing your dependency and imports.
-
-Imports in either of these formats can be directly renamed:
-
+For IColumn interface:
 ```ts
-// Old
-import { TextField } from 'office-ui-fabric-react';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-
-// New
-import { TextField } from '@fluentui/react';
-import { TextField } from '@fluentui/react/lib/TextField';
+    const column: IColumn = {
+        key: "ColumnKey",
+        name: "ColumnName",
+        isResizable: true,
+        minWidth: 100, // this is the width of the column on table load
+        maxWidth: 200, // maximum width when resizing
+        minResizeWidth: 50, // this new prop controls the minimum width of a column when resizing it. Previously we were limited to minWidth value.
+        onRender: () => {...}
+    }
 ```
 
-However, deeper imports from internal files **will not** work with `@fluentui/react`. (These types of imports are also unsupported today, as internal file paths are considered private APIs and therefore subject to change without notice.)
+Modifications have only been made in:
+ **lib\components\DetailsList\DetailsColumn.types.d.ts** 
+ To add the minResizeWidth prop to the IColumn interface
 
-```ts
-// Not supported currently; won't work with @fluentui/react
-import { TextField } from 'office-ui-fabric-react/lib/components/TextField/index';
+ **lib\components\DetailsList\DetailsList.base.js**
+ To update the logic to determine resizable widths of columns
+ ```ts
+ var newCalculatedWidth = Math.max(newWidth, resizingColumn.minResizeWidth || MIN_COLUMN_WIDTH);
+ ```
 
-// Use instead
-import { TextField } from '@fluentui/react';
-import { TextField } from '@fluentui/react/lib/TextField';
-```
-
-If you're currently depending on an API which you think should be public but is not exported from the top level of the package, please [file an issue](https://github.com/microsoft/fluentui/issues) to discuss.
+ All other components remain the same.
